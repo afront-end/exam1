@@ -1,0 +1,26 @@
+from django.urls import path
+from .views import *
+
+urlpatterns = [
+    path('',base,name='/'),
+    path('categories/',categories,name='categories'),
+    path('categories/create/',categories_create,name='category_create'),
+    path('categories/update/<int:pk>/',categories_update,name='category_update'),
+    path('categories/delete/<int:pk>/',categories_delete,name='category_delete'),
+    path('categories/<int:pk>/',categories_detail,name='category_detail'),
+    path('authors/',authors,name='authors'),
+    path('authors/create/',authors_create,name='author_create'),
+    path('authors/update/<int:pk>/',authors_update,name='author_update'),
+    path('authors/delete/<int:pk>/',authors_delete,name='author_delete'),
+    path('authors/<int:pk>/',authors_detail,name='author_detail'),
+    path('publishers/',publishers,name='publishers'),
+    path('publishers/create/',publishers_create,name='publisher_create'),
+    path('publishers/update/<int:pk>/',publishers_update,name='publisher_update'),
+    path('publishers/delete/<int:pk>/',publishers_delete,name='publisher_delete'),
+    path('publishers/<int:pk>/',publishers_detail,name='publisher_detail'),
+    path('books/',books,name='books'),
+    path('books/create/',books_create,name='book_create'),
+    path('books/update/<int:pk>/',books_update,name='book_update'),
+    path('books/delete/<int:pk>/',books_delete,name='book_delete'),
+    path('books/<int:pk>/',books_detail,name='book_detail'),
+]

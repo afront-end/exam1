@@ -1,0 +1,367 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static '/books/book_create_or_update.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+</head>
+<body>
+    <div class="book-form-page">
+    <!-- Header -->
+    <header class="form-header">
+        <a href="{% url 'books' %}" class="back-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Назад к каталогу
+        </a>
+        <div class="header-content">
+            <div class="header-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    {% if book %}
+                    <path d="M12 11l2 2 4-4"></path>
+                    {% else %}
+                    <path d="M12 8v8M8 12h8"></path>
+                    {% endif %}
+                </svg>
+            </div>
+            <div class="header-text">
+                <h1 class="form-title">{% if book %}Редактировать книгу{% else %}Добавить новую книгу{% endif %}</h1>
+                <p class="form-subtitle">{% if book %}Внесите необходимые изменения{% else %}Заполните информацию о книге{% endif %}</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Form Container -->
+    <div class="form-container">
+        <form method="POST" enctype="multipart/form-data" class="book-form" id="bookForm">
+            {% csrf_token %}
+            
+            <!-- Cover Preview & Upload -->
+            <div class="form-section cover-section">
+                <h2 class="section-heading">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <path d="M21 15l-5-5L5 21"></path>
+                    </svg>
+                    Обложка книги
+                </h2>
+                
+                <div class="cover-upload-area">
+                    <div class="cover-preview" id="coverPreview">
+                        {% if book and book.cover %}
+                        <img src="{{ book.cover.url }}" alt="Обложка" id="previewImage">
+                        {% else %}
+                        <div class="upload-placeholder" id="uploadPlaceholder">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            <span>Перетащите изображение или нажмите для выбора</span>
+                            <span class="upload-hint">PNG, JPG до 5MB</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <input type="file" name="cover" id="coverInput" accept="image/*" class="hidden-input">
+                    <div class="cover-actions">
+                        <button type="button" class="upload-btn" onclick="document.getElementById('coverInput').click()">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            Загрузить обложку
+                        </button>
+                        {% if book and book.cover %}
+                        <button type="button" class="remove-cover-btn" id="removeCoverBtn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                            Удалить
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Basic Info -->
+            <div class="form-section">
+                <h2 class="section-heading">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"></path>
+                    </svg>
+                    Основная информация
+                </h2>
+                
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label for="title" class="form-label">
+                            Название книги
+                            <span class="required">*</span>
+                        </label>
+                        <input type="text" name="title" id="title" class="form-input" 
+                               value="{% if book %}{{ book.title }}{% endif %}" 
+                               placeholder="Введите название книги" required>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="description" class="form-label">Описание</label>
+                        <textarea name="description" id="description" class="form-textarea" 
+                                  rows="5" placeholder="Краткое описание книги...">{% if book %}{{ book.description }}{% endif %}</textarea>
+                        <span class="char-counter"><span id="descCount">0</span>/1000</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Relations -->
+            <div class="form-section">
+                <h2 class="section-heading">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                        <line x1="23" y1="11" x2="17" y2="11"></line>
+                    </svg>
+                    Автор, издательство и категория
+                </h2>
+                
+                <div class="form-grid three-cols">
+                    <div class="form-group">
+                        <label for="author" class="form-label">
+                            Автор
+                            <span class="required">*</span>
+                        </label>
+                        <div class="select-wrapper">
+                            <select name="author" id="author" class="form-select" required>
+                                <option value="">Выберите автора</option>
+                                {% for author in authors %}
+                                <option value="{{ author.id }}" {% if book and book.author.id == author.id %}selected{% endif %}>
+                                    {{ author.full_name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            <svg class="select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </div>
+                        <a href="{% url 'author_create' %}" class="quick-add-link">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Добавить автора
+                        </a>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="publisher" class="form-label">
+                            Издательство
+                            <span class="required">*</span>
+                        </label>
+                        <div class="select-wrapper">
+                            <select name="publisher" id="publisher" class="form-select" required>
+                                <option value="">Выберите издательство</option>
+                                {% for publisher in publishers %}
+                                <option value="{{ publisher.id }}" {% if book and book.publisher.id == publisher.id %}selected{% endif %}>
+                                    {{ publisher.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            <svg class="select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </div>
+                        <a href="{% url 'publisher_create' %}" class="quick-add-link">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Добавить издательство
+                        </a>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="category" class="form-label">
+                            Категория
+                            <span class="required">*</span>
+                        </label>
+                        <div class="select-wrapper">
+                            <select name="category" id="category" class="form-select" required>
+                                <option value="">Выберите категорию</option>
+                                {% for category in categories %}
+                                <option value="{{ category.id }}" {% if book and book.category.id == category.id %}selected{% endif %}>
+                                    {{ category.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            <svg class="select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </div>
+                        <a href="{% url 'category_create' %}" class="quick-add-link">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Добавить категорию
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Details -->
+            <div class="form-section">
+                <h2 class="section-heading">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M12 16v-4M12 8h.01"></path>
+                    </svg>
+                    Детали
+                </h2>
+                
+                <div class="form-grid two-cols">
+                    <div class="form-group">
+                        <label for="price" class="form-label">
+                            Цена (сум)
+                            <span class="required">*</span>
+                        </label>
+                        <div class="input-with-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                            <input type="number" name="price" id="price" class="form-input with-icon" 
+                                   value="{% if book %}{{ book.price }}{% endif %}" 
+                                   placeholder="0.00" step="0.01" min="0" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="pages" class="form-label">
+                            Количество страниц
+                            <span class="required">*</span>
+                        </label>
+                        <div class="input-with-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                            </svg>
+                            <input type="number" name="pages" id="pages" class="form-input with-icon" 
+                                   value="{% if book %}{{ book.pages }}{% endif %}" 
+                                   placeholder="0" min="1" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <a href="{% url 'books' %}" class="cancel-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                    Отмена
+                </a>
+                <button type="submit" class="submit-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                        <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                        <polyline points="7 3 7 8 15 8"></polyline>
+                    </svg>
+                    {% if book %}Сохранить изменения{% else %}Добавить книгу{% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+    </div>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const coverInput = document.getElementById('coverInput');
+    const coverPreview = document.getElementById('coverPreview');
+    const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+    const descTextarea = document.getElementById('description');
+    const descCount = document.getElementById('descCount');
+    
+    // Cover preview
+    coverInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                coverPreview.innerHTML = `<img src="${e.target.result}" alt="Предпросмотр" id="previewImage">`;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    // Drag and drop
+    coverPreview.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        this.classList.add('dragover');
+    });
+    
+    coverPreview.addEventListener('dragleave', function() {
+        this.classList.remove('dragover');
+    });
+    
+    coverPreview.addEventListener('drop', function(e) {
+        e.preventDefault();
+        this.classList.remove('dragover');
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith('image/')) {
+            coverInput.files = e.dataTransfer.files;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                coverPreview.innerHTML = `<img src="${e.target.result}" alt="Предпросмотр" id="previewImage">`;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    // Character counter
+    function updateCharCount() {
+        const count = descTextarea.value.length;
+        descCount.textContent = count;
+        if (count > 1000) {
+            descCount.parentElement.classList.add('over-limit');
+        } else {
+            descCount.parentElement.classList.remove('over-limit');
+        }
+    }
+    
+    descTextarea.addEventListener('input', updateCharCount);
+    updateCharCount();
+    
+    // Remove cover button
+    const removeCoverBtn = document.getElementById('removeCoverBtn');
+    if (removeCoverBtn) {
+        removeCoverBtn.addEventListener('click', function() {
+            coverInput.value = '';
+            coverPreview.innerHTML = `
+                <div class="upload-placeholder" id="uploadPlaceholder">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <span>Перетащите изображение или нажмите для выбора</span>
+                    <span class="upload-hint">PNG, JPG до 5MB</span>
+                </div>
+            `;
+        });
+    }
+});
+    </script>
+</body>
+</html>

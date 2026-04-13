@@ -1,0 +1,153 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publishers - BookHouse</title>
+    <link rel="stylesheet" href="{% static 'publishers/publishers.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="{% url '/' %}" class="logo">
+                <span class="logo-icon">📚</span>
+                <span class="logo-text">BookHouse</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="{% url '/' %}" class="nav-link">Home</a></li>
+                <li><a href="{% url 'categories' %}" class="nav-link">Categories</a></li>
+                <li><a href="{% url 'authors' %}" class="nav-link">Authors</a></li>
+                <li><a href="{% url 'publishers' %}" class="nav-link active">Publishers</a></li>
+                <li><a href="{% url 'books' %}" class="nav-link">Books</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="search-btn" aria-label="Search">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </button>
+                <button class="cart-btn" aria-label="Cart">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"></path>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <path d="M16 10a4 4 0 01-8 0"></path>
+                    </svg>
+                    <span class="cart-count">0</span>
+                </button>
+            </div>
+            <button class="mobile-menu-btn" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <section class="publishers-page">
+        <div class="publishers-container">
+            <div class="publishers-toolbar">
+                <div class="publishers-count">
+                    <span class="count-number">{{ publishers|length }}</span> publishers found
+                </div>
+                <a href="{% url 'publisher_create' %}" class="btn btn-primary btn-add">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Add Publisher
+                </a>
+            </div>
+
+            <div class="publishers-grid">
+                {% for publisher in publishers %}
+                <article class="publisher-card">
+                    <div class="publisher-card-image">
+                        {% if publisher.logo %}
+                        <img src="{{ publisher.logo.url }}" alt="{{ publisher.name }}">
+                        {% else %}
+                        <div class="publisher-card-placeholder">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="publisher-card-body">
+                        <h2 class="publisher-card-name">
+                            <a href="{% url 'publisher_detail' publisher.id %}">{{ publisher.name }}</a>
+                        </h2>
+                        {% if publisher.address %}
+                        <p class="publisher-card-address">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            {{ publisher.address|truncatewords:8 }}
+                        </p>
+                        {% endif %}
+                        {% if publisher.phone %}
+                        <p class="publisher-card-phone">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                            {{ publisher.phone }}
+                        </p>
+                        {% endif %}
+                        <div class="publisher-card-meta">
+                            <span class="book-count">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                                </svg>
+                                {{ publisher.book_set.count }} books
+                            </span>
+                        </div>
+                    </div>
+                    <div class="publisher-card-actions">
+                        <a href="{% url 'publisher_detail' publisher.id %}" class="btn-icon" title="View">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </a>
+                        <a href="{% url 'publisher_update' publisher.id %}" class="btn-icon" title="Edit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                        </a>
+                        <a href="{% url 'publisher_delete' publisher.id %}" class="btn-icon btn-icon-danger" title="Delete">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </article>
+                {% empty %}
+                <div class="empty-state">
+                    <div class="empty-state-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                    </div>
+                    <h3 class="empty-state-title">No publishers yet</h3>
+                    <p class="empty-state-text">Start building your library by adding your first publisher.</p>
+                    <a href="{% url 'publisher_create' %}" class="btn btn-primary">
+                        Add First Publisher
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</body>
+</html>

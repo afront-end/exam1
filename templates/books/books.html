@@ -1,0 +1,230 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'books/books.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="{% url '/' %}" class="logo">
+                <span class="logo-icon">📚</span>
+                <span class="logo-text">BookHouse</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="{% url '/' %}" class="nav-link">Home</a></li>
+                <li><a href="{% url 'categories' %}" class="nav-link">Categories</a></li>
+                <li><a href="{% url 'authors' %}" class="nav-link">Authors</a></li>
+                <li><a href="{% url 'publishers' %}" class="nav-link">Publishers</a></li>
+                <li><a href="{% url 'books' %}" class="nav-link active">Books</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="search-btn" aria-label="Search">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </button>
+                <button class="cart-btn" aria-label="Cart">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"></path>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <path d="M16 10a4 4 0 01-8 0"></path>
+                    </svg>
+                    <span class="cart-count">0</span>
+                </button>
+            </div>
+            <button class="mobile-menu-btn" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <div class="books-page">
+    <!-- Hero Section -->
+    <section class="books-hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Каталог книг</h1>
+            <p class="hero-subtitle">Откройте для себя мир литературы</p>
+        </div>
+        <div class="hero-stats">
+            <div class="stat-item">
+                <span class="stat-number">{{ books|length }}</span>
+                <span class="stat-label">Книг в каталоге</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Bar -->
+    <section class="filter-bar">
+        <div class="filter-group">
+            <label class="filter-label">Сортировка:</label>
+            <select class="filter-select" id="sortSelect">
+                <option value="title">По названию</option>
+                <option value="price-low">Цена: по возрастанию</option>
+                <option value="price-high">Цена: по убыванию</option>
+                <option value="pages">По количеству страниц</option>
+            </select>
+        </div>
+        <div class="view-toggle">
+            <button class="view-btn active" data-view="grid" title="Сетка">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                </svg>
+            </button>
+            <button class="view-btn" data-view="list" title="Список">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <a href="{% url 'book_create' %}" class="add-book-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Добавить книгу
+        </a>
+    </section>
+
+    <!-- Books Grid -->
+    <section class="books-container">
+        {% if books %}
+        <div class="books-grid" id="booksGrid">
+            {% for book in books %}
+            <article class="book-card" data-title="{{ book.title }}" data-price="{{ book.price }}" data-pages="{{ book.pages }}">
+                <div class="book-cover-wrapper">
+                    {% if book.cover %}
+                    <img src="{{ book.cover.url }}" alt="{{ book.title }}" class="book-cover">
+                    {% else %}
+                    <div class="book-cover-placeholder">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </div>
+                    {% endif %}
+                    <div class="book-overlay">
+                        <a href="{% url 'book_detail' book.id %}" class="overlay-btn view-btn-overlay">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </a>
+                        <a href="{% url 'book_update' book.id %}" class="overlay-btn edit-btn-overlay">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    <span class="book-category-badge">{{ book.category.name }}</span>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title">
+                        <a href="{% url 'book_detail' book.id %}">{{ book.title }}</a>
+                    </h3>
+                    <p class="book-author">{{ book.author.full_name }}</p>
+                    <div class="book-meta">
+                        <span class="book-pages">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                            </svg>
+                            {{ book.pages }} стр.
+                        </span>
+                        <span class="book-publisher">{{ book.publisher.name }}</span>
+                    </div>
+                    <div class="book-footer">
+                        <span class="book-price">{{ book.price }} сум</span>
+                        <a href="{% url 'book_detail' book.id %}" class="book-details-link">Подробнее</a>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+            </div>
+            <h2 class="empty-title">Каталог пуст</h2>
+            <p class="empty-text">Добавьте первую книгу в каталог</p>
+            <a href="{% url 'book_create' %}" class="empty-action">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                Добавить книгу
+            </a>
+        </div>
+        {% endif %}
+    </section>
+    </div>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // View Toggle
+    const viewBtns = document.querySelectorAll('.view-btn');
+    const booksGrid = document.getElementById('booksGrid');
+    
+    viewBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            viewBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            if (this.dataset.view === 'list') {
+                booksGrid.classList.add('list-view');
+            } else {
+                booksGrid.classList.remove('list-view');
+            }
+        });
+    });
+
+    // Sort functionality
+    const sortSelect = document.getElementById('sortSelect');
+    sortSelect.addEventListener('change', function() {
+        const cards = Array.from(document.querySelectorAll('.book-card'));
+        const container = document.getElementById('booksGrid');
+        
+        cards.sort((a, b) => {
+            switch(this.value) {
+                case 'title':
+                    return a.dataset.title.localeCompare(b.dataset.title);
+                case 'price-low':
+                    return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+                case 'price-high':
+                    return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+                case 'pages':
+                    return parseInt(b.dataset.pages) - parseInt(a.dataset.pages);
+                default:
+                    return 0;
+            }
+        });
+        
+        cards.forEach(card => container.appendChild(card));
+    });
+});
+    </script>
+</body>
+</html>

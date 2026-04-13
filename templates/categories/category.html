@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'categories/category.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+</head>
+<body>
+    <section class="page-header page-header-detail">
+    <div class="page-header-content">
+        <nav class="breadcrumb">
+            <a href="{% url '/' %}">Home</a>
+            <span class="breadcrumb-separator">/</span>
+            <a href="{% url 'categories' %}">Categories</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">{{ category.name }}</span>
+        </nav>
+    </div>
+</section>
+
+<section class="detail-page">
+    <div class="detail-container">
+        <div class="detail-card">
+            <div class="detail-header">
+                <div class="detail-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        <line x1="8" y1="6" x2="16" y2="6"></line>
+                        <line x1="8" y1="10" x2="14" y2="10"></line>
+                    </svg>
+                </div>
+                <div class="detail-title-group">
+                    <h1 class="detail-title">{{ category.name }}</h1>
+                    <span class="detail-badge">Category</span>
+                </div>
+            </div>
+
+            <div class="detail-body">
+                <div class="detail-section">
+                    <h2 class="detail-section-title">Description</h2>
+                    <p class="detail-description">
+                        {% if category.description %}
+                            {{ category.description }}
+                        {% else %}
+                            <span class="text-muted">No description provided for this category.</span>
+                        {% endif %}
+                    </p>
+                </div>
+
+                <div class="detail-section">
+                    <h2 class="detail-section-title">Statistics</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                                </svg>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-number">{{ category.book_set.count }}</span>
+                                <span class="stat-label">Books</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if category.book_set.all %}
+                <div class="detail-section">
+                    <h2 class="detail-section-title">Books in this Category</h2>
+                    <div class="books-mini-list">
+                        {% for book in category.book_set.all %}
+                        <a href="{% url 'book_detail' book.id %}" class="book-mini-item">
+                            <div class="book-mini-cover">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                                </svg>
+                            </div>
+                            <span class="book-mini-title">{{ book.title }}</span>
+                            <svg class="book-mini-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="detail-footer">
+                <a href="{% url 'categories' %}" class="btn btn-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Back to Categories
+                </a>
+                <div class="detail-actions">
+                    <a href="{% url 'category_update' category.id %}" class="btn btn-outline">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                        Edit
+                    </a>
+                    <a href="{% url 'category_delete' category.id %}" class="btn btn-danger">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                        Delete
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'authors/author_create_or_update.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+</head>
+<body>
+    <section class="page-header-detail">
+    <div class="page-header-content">
+        <nav class="breadcrumb">
+            <a href="{% url '/' %}">Home</a>
+            <span class="breadcrumb-separator">/</span>
+            <a href="{% url 'authors' %}">Authors</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">{% if author %}Edit {{ author.full_name }}{% else %}New Author{% endif %}</span>
+        </nav>
+    </div>
+</section>
+
+<section class="form-page">
+    <div class="form-container">
+        <div class="form-card">
+            <div class="form-header">
+                <div class="form-icon">
+                    {% if author %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                    {% else %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                        <line x1="23" y1="11" x2="17" y2="11"></line>
+                    </svg>
+                    {% endif %}
+                </div>
+                <h1 class="form-title">{% if author %}Edit Author{% else %}Add New Author{% endif %}</h1>
+                <p class="form-subtitle">{% if author %}Update the author information below{% else %}Fill in the details to add a new author{% endif %}</p>
+            </div>
+
+            <form method="post" enctype="multipart/form-data" class="form-body">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label class="form-label" for="full_name">
+                        Full Name
+                        <span class="label-required">*</span>
+                    </label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <input 
+                            type="text" 
+                            id="full_name" 
+                            name="full_name" 
+                            class="form-input" 
+                            placeholder="Enter author's full name"
+                            value="{% if author %}{{ author.full_name }}{% endif %}"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">
+                        Email Address
+                        <span class="label-optional">(optional)</span>
+                    </label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            class="form-input" 
+                            placeholder="author@example.com"
+                            value="{% if author %}{{ author.email }}{% endif %}"
+                        >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="bio">
+                        Biography
+                        <span class="label-optional">(optional)</span>
+                    </label>
+                    <div class="textarea-wrapper">
+                        <textarea 
+                            id="bio" 
+                            name="bio" 
+                            class="form-textarea" 
+                            placeholder="Write a brief biography about the author..."
+                            rows="5"
+                        >{% if author %}{{ author.bio }}{% endif %}</textarea>
+                    </div>
+                    <span class="form-hint">Share information about the author's background, achievements, and writing style.</span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="photo">
+                        Photo
+                        <span class="label-optional">(optional)</span>
+                    </label>
+                    <div class="file-upload-wrapper">
+                        {% if author and author.photo %}
+                        <div class="current-photo">
+                            <img src="{{ author.photo.url }}" alt="{{ author.full_name }}">
+                            <span class="current-photo-label">Current photo</span>
+                        </div>
+                        {% endif %}
+                        <label class="file-upload-area" for="photo">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                            <span class="file-upload-text">Click to upload a photo</span>
+                            <span class="file-upload-hint">PNG, JPG up to 5MB</span>
+                            <input type="file" id="photo" name="photo" accept="image/*">
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-footer">
+                    <a href="{% url 'authors' %}" class="btn btn-secondary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                            <polyline points="7 3 7 8 15 8"></polyline>
+                        </svg>
+                        {% if author %}Save Changes{% else %}Create Author{% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+</body>
+</html>

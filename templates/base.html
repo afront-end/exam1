@@ -1,0 +1,231 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookHouse - Discover Your Next Story</title>
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="{% url '/' %}" class="logo">
+                <span class="logo-icon">📚</span>
+                <span class="logo-text">BookHouse</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="{% url '/' %}" class="nav-link active">Home</a></li>
+                <li><a href="{% url 'categories' %}" class="nav-link">Categories</a></li>
+                <li><a href="{% url 'authors' %}" class="nav-link">Authors</a></li>
+                <li><a href="{% url 'publishers' %}" class="nav-link">Publishers</a></li>
+                <li><a href="{% url 'books' %}" class="nav-link">Books</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="search-btn" aria-label="Search">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </button>
+                <button class="cart-btn" aria-label="Cart">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"></path>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <path d="M16 10a4 4 0 01-8 0"></path>
+                    </svg>
+                    <span class="cart-count">0</span>
+                </button>
+            </div>
+            <button class="mobile-menu-btn" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <p class="hero-subtitle">Welcome to BookHouse</p>
+                <h1 class="hero-title">
+                    Discover stories that<br>
+                    <em>inspire your soul</em>
+                </h1>
+                <p class="hero-description">
+                    Explore our curated collection of timeless classics and contemporary 
+                    masterpieces. Every book is a new adventure waiting to unfold.
+                </p>
+                <div class="hero-buttons">
+                    <a href="{% url 'books' %}" class="btn btn-primary">Explore Collection</a>
+                    <a href="{% url 'categories' %}" class="btn btn-secondary">Browse Categories</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="book-stack">
+                    <div class="book book-1"></div>
+                    <div class="book book-2"></div>
+                    <div class="book book-3"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M4 19.5A2.5 2.5 0 016.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Vast Collection</h3>
+                    <p class="feature-text">Over 10,000 books across all genres and categories</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 00-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 010 7.75"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Expert Authors</h3>
+                    <p class="feature-text">Works from renowned writers and emerging talents</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="1" y="3" width="15" height="13"></rect>
+                            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                            <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                            <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Fast Delivery</h3>
+                    <p class="feature-text">Free shipping on orders over $30</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Secure Shopping</h3>
+                    <p class="feature-text">100% safe and secure checkout</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Preview -->
+        <section class="categories-section">
+            <div class="section-header">
+                <h2 class="section-title">Explore by Category</h2>
+                <a href="{% url 'categories' %}" class="section-link">
+                    View All
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14"></path>
+                        <path d="m12 5 7 7-7 7"></path>
+                    </svg>
+                </a>
+            </div>
+            <div class="categories-grid">
+                <a href="#" class="category-card">
+                    <div class="category-image category-fiction"></div>
+                    <h3 class="category-name">Fiction</h3>
+                    <span class="category-count">2,450 books</span>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="category-image category-mystery"></div>
+                    <h3 class="category-name">Mystery</h3>
+                    <span class="category-count">1,230 books</span>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="category-image category-romance"></div>
+                    <h3 class="category-name">Romance</h3>
+                    <span class="category-count">1,890 books</span>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="category-image category-scifi"></div>
+                    <h3 class="category-name">Sci-Fi</h3>
+                    <span class="category-count">980 books</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Quote Section -->
+        <section class="quote-section">
+            <blockquote class="quote">
+                <p>"A reader lives a thousand lives before he dies. The man who never reads lives only one."</p>
+                <cite>— George R.R. Martin</cite>
+            </blockquote>
+        </section>
+
+        <!-- Newsletter -->
+        <section class="newsletter">
+            <div class="newsletter-content">
+                <h2 class="newsletter-title">Stay Updated</h2>
+                <p class="newsletter-text">Subscribe to our newsletter for new releases and exclusive offers</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Enter your email" class="newsletter-input" required>
+                    <button type="submit" class="btn btn-primary">Subscribe</button>
+                </form>
+            </div>
+        </section>
+
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <a href="{% url '/' %}" class="logo">
+                    <span class="logo-icon">📚</span>
+                    <span class="logo-text">BookHouse</span>
+                </a>
+                <p class="footer-tagline">Your gateway to endless stories and adventures.</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="{% url '/' %}">Home</a></li>
+                        <li><a href="{% url 'books' %}">Books</a></li>
+                        <li><a href="{% url 'authors' %}">Authors</a></li>
+                        <li><a href="{% url 'publishers' %}">Publishers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Categories</h4>
+                    <ul>
+                        <li><a href="#">Fiction</a></li>
+                        <li><a href="#">Non-Fiction</a></li>
+                        <li><a href="#">Mystery</a></li>
+                        <li><a href="#">Romance</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Shipping</a></li>
+                        <li><a href="#">Returns</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 BookHouse. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

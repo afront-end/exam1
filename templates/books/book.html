@@ -1,0 +1,225 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static '/books/book.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+</head>
+<body>
+    <div class="book-detail-page">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="{% url 'books' %}" class="breadcrumb-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Каталог книг
+        </a>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-current">{{ book.title }}</span>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="book-detail-container">
+        <!-- Left Column - Cover -->
+        <div class="book-cover-section">
+            <div class="book-cover-frame">
+                {% if book.cover %}
+                <img src="{{ book.cover.url }}" alt="{{ book.title }}" class="book-cover-image">
+                {% else %}
+                <div class="book-cover-placeholder">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                    <span>Нет обложки</span>
+                </div>
+                {% endif %}
+                <span class="category-badge">{{ book.category.name }}</span>
+            </div>
+            
+            <!-- Quick Stats -->
+            <div class="quick-stats">
+                <div class="stat-card">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                    </svg>
+                    <span class="stat-value">{{ book.pages }}</span>
+                    <span class="stat-label">страниц</span>
+                </div>
+                <div class="stat-card">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M12 6v6l4 2"></path>
+                    </svg>
+                    <span class="stat-value">~{{ book.pages|divisibleby:30 }}ч</span>
+                    <span class="stat-label">чтения</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column - Details -->
+        <div class="book-info-section">
+            <header class="book-header">
+                <h1 class="book-title">{{ book.title }}</h1>
+                <div class="book-price-tag">
+                    <span class="price-value">{{ book.price }}</span>
+                    <span class="price-currency">сум</span>
+                </div>
+            </header>
+
+            <!-- Author & Publisher Info -->
+            <div class="book-creators">
+                <a href="{% url 'author_detail' book.author.id %}" class="creator-card author-card">
+                    <div class="creator-avatar">
+                        {% if book.author.photo %}
+                        <img src="{{ book.author.photo.url }}" alt="{{ book.author.full_name }}">
+                        {% else %}
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        {% endif %}
+                    </div>
+                    <div class="creator-info">
+                        <span class="creator-label">Автор</span>
+                        <span class="creator-name">{{ book.author.full_name }}</span>
+                    </div>
+                    <svg class="creator-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                </a>
+                
+                <a href="{% url 'publisher_detail' book.publisher.id %}" class="creator-card publisher-card">
+                    <div class="creator-avatar">
+                        {% if book.publisher.logo %}
+                        <img src="{{ book.publisher.logo.url }}" alt="{{ book.publisher.name }}">
+                        {% else %}
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 21h18M3 7v1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7H3l2-4h14l2 4M5 21V10.85M19 21V10.85"/>
+                        </svg>
+                        {% endif %}
+                    </div>
+                    <div class="creator-info">
+                        <span class="creator-label">Издательство</span>
+                        <span class="creator-name">{{ book.publisher.name }}</span>
+                    </div>
+                    <svg class="creator-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                </a>
+            </div>
+
+            <!-- Description -->
+            <div class="book-description">
+                <h2 class="section-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"></path>
+                    </svg>
+                    Описание
+                </h2>
+                <div class="description-content">
+                    {% if book.description %}
+                    <p>{{ book.description|linebreaks }}</p>
+                    {% else %}
+                    <p class="no-description">Описание книги пока не добавлено.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Book Details Table -->
+            <div class="book-specs">
+                <h2 class="section-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M12 16v-4M12 8h.01"></path>
+                    </svg>
+                    Характеристики
+                </h2>
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <span class="spec-label">Категория</span>
+                        <span class="spec-value">{{ book.category.name }}</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Количество страниц</span>
+                        <span class="spec-value">{{ book.pages }}</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Автор</span>
+                        <span class="spec-value">{{ book.author.full_name }}</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Издательство</span>
+                        <span class="spec-value">{{ book.publisher.name }}</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Цена</span>
+                        <span class="spec-value spec-price">{{ book.price }} сум</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="book-actions">
+                <a href="{% url 'book_update' book.id %}" class="action-btn edit-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                    Редактировать
+                </a>
+                <a href="{% url 'book_delete' book.id %}" class="action-btn delete-btn" onclick="return confirm('Вы уверены, что хотите удалить эту книгу?')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                    </svg>
+                    Удалить
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Books Section -->
+    <section class="related-section">
+        <h2 class="related-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+            Другие книги автора
+        </h2>
+        <div class="related-books">
+            {% for related_book in book.author.book_set.all %}
+            {% if related_book.id != book.id %}
+            <a href="{% url 'book_detail' related_book.id %}" class="related-book-card">
+                <div class="related-cover">
+                    {% if related_book.cover %}
+                    <img src="{{ related_book.cover.url }}" alt="{{ related_book.title }}">
+                    {% else %}
+                    <div class="related-placeholder">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </div>
+                    {% endif %}
+                </div>
+                <h4 class="related-title-text">{{ related_book.title }}</h4>
+                <span class="related-price">{{ related_book.price }} сум</span>
+            </a>
+            {% endif %}
+            {% empty %}
+            <p class="no-related">Других книг этого автора пока нет в каталоге.</p>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+</body>
+</html>

@@ -1,0 +1,585 @@
+/* ========================================
+   BOOK FORM - Enhanced Styles
+   ======================================== */
+
+:root {
+    --book-primary: #8B4513;
+    --book-primary-light: #A0522D;
+    --book-primary-dark: #654321;
+    --book-accent: #D2691E;
+    --book-accent-light: #DEB887;
+    --book-gold: #DAA520;
+    --book-bg: #FDF5E6;
+    --book-bg-alt: #FAF0E6;
+    --book-card-bg: #FFFFFF;
+    --book-text: #3E2723;
+    --book-text-light: #5D4037;
+    --book-text-muted: #8D6E63;
+    --book-border: #D7CCC8;
+    --book-shadow: rgba(62, 39, 35, 0.1);
+    --book-shadow-hover: rgba(62, 39, 35, 0.2);
+    --book-gradient: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #D2691E 100%);
+    --book-gradient-soft: linear-gradient(135deg, #FDF5E6 0%, #FAF0E6 100%);
+    --book-success: #2E7D32;
+    --book-success-light: #E8F5E9;
+    --book-danger: #C62828;
+    --book-danger-light: #FFEBEE;
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+}
+
+/* ========================================
+   PAGE LAYOUT
+   ======================================== */
+
+.book-form-page {
+    min-height: 100vh;
+    background: var(--book-gradient-soft);
+    padding: 30px 40px 60px;
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.form-header {
+    max-width: 900px;
+    margin: 0 auto 40px;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--book-primary);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 24px;
+    transition: var(--transition-fast);
+}
+
+.back-link:hover {
+    color: var(--book-primary-dark);
+    gap: 12px;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.header-icon {
+    width: 70px;
+    height: 70px;
+    background: var(--book-gradient);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    box-shadow: 0 8px 25px rgba(139, 69, 19, 0.3);
+}
+
+.header-text {
+    flex: 1;
+}
+
+.form-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--book-text);
+    margin: 0 0 6px 0;
+}
+
+.form-subtitle {
+    font-size: 1rem;
+    color: var(--book-text-muted);
+    margin: 0;
+}
+
+/* ========================================
+   FORM CONTAINER
+   ======================================== */
+
+.form-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.book-form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* ========================================
+   FORM SECTIONS
+   ======================================== */
+
+.form-section {
+    background: var(--book-card-bg);
+    padding: 30px;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 20px var(--book-shadow);
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--book-text);
+    margin: 0 0 24px 0;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--book-bg);
+}
+
+.section-heading svg {
+    color: var(--book-primary);
+}
+
+/* ========================================
+   COVER UPLOAD
+   ======================================== */
+
+.cover-upload-area {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.cover-preview {
+    width: 240px;
+    aspect-ratio: 3/4;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--book-bg);
+    border: 3px dashed var(--book-border);
+    transition: var(--transition-normal);
+    cursor: pointer;
+}
+
+.cover-preview:hover,
+.cover-preview.dragover {
+    border-color: var(--book-primary);
+    background: var(--book-accent-light);
+}
+
+.cover-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.upload-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px;
+    text-align: center;
+    color: var(--book-text-muted);
+}
+
+.upload-placeholder svg {
+    color: var(--book-primary);
+    opacity: 0.7;
+}
+
+.upload-placeholder span {
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.upload-hint {
+    font-size: 0.8rem !important;
+    opacity: 0.7;
+}
+
+.cover-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.upload-btn,
+.remove-cover-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-fast);
+    border: none;
+}
+
+.upload-btn {
+    background: var(--book-primary);
+    color: #FFFFFF;
+}
+
+.upload-btn:hover {
+    background: var(--book-primary-dark);
+}
+
+.remove-cover-btn {
+    background: var(--book-danger-light);
+    color: var(--book-danger);
+    border: 1px solid var(--book-danger);
+}
+
+.remove-cover-btn:hover {
+    background: var(--book-danger);
+    color: #FFFFFF;
+}
+
+.hidden-input {
+    display: none;
+}
+
+/* ========================================
+   FORM GRID
+   ======================================== */
+
+.form-grid {
+    display: grid;
+    gap: 24px;
+}
+
+.form-grid.two-cols {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.form-grid.three-cols {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+/* ========================================
+   FORM GROUP
+   ======================================== */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--book-text);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.required {
+    color: var(--book-danger);
+}
+
+/* ========================================
+   FORM INPUTS
+   ======================================== */
+
+.form-input,
+.form-textarea,
+.form-select {
+    width: 100%;
+    padding: 14px 18px;
+    font-size: 1rem;
+    font-family: inherit;
+    color: var(--book-text);
+    background: var(--book-bg);
+    border: 2px solid var(--book-border);
+    border-radius: var(--radius-md);
+    transition: var(--transition-fast);
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+    outline: none;
+    border-color: var(--book-primary);
+    background: #FFFFFF;
+    box-shadow: 0 0 0 4px rgba(139, 69, 19, 0.1);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+    color: var(--book-text-muted);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Select wrapper */
+.select-wrapper {
+    position: relative;
+}
+
+.form-select {
+    appearance: none;
+    cursor: pointer;
+    padding-right: 45px;
+}
+
+.select-arrow {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--book-text-muted);
+    pointer-events: none;
+}
+
+/* Input with icon */
+.input-with-icon {
+    position: relative;
+}
+
+.input-with-icon svg {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--book-text-muted);
+}
+
+.form-input.with-icon {
+    padding-left: 48px;
+}
+
+/* Character counter */
+.char-counter {
+    font-size: 0.8rem;
+    color: var(--book-text-muted);
+    text-align: right;
+    margin-top: 4px;
+}
+
+.char-counter.over-limit {
+    color: var(--book-danger);
+}
+
+/* Quick add link */
+.quick-add-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: var(--book-primary);
+    text-decoration: none;
+    margin-top: 8px;
+    transition: var(--transition-fast);
+}
+
+.quick-add-link:hover {
+    color: var(--book-primary-dark);
+    text-decoration: underline;
+}
+
+/* ========================================
+   FORM ACTIONS
+   ======================================== */
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    padding: 30px;
+    background: var(--book-card-bg);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 20px var(--book-shadow);
+}
+
+.cancel-btn,
+.submit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-normal);
+    text-decoration: none;
+    border: none;
+}
+
+.cancel-btn {
+    background: var(--book-bg);
+    color: var(--book-text);
+    border: 2px solid var(--book-border);
+}
+
+.cancel-btn:hover {
+    background: var(--book-border);
+}
+
+.submit-btn {
+    background: var(--book-gradient);
+    color: #FFFFFF;
+    box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 992px) {
+    .form-grid.three-cols {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .book-form-page {
+        padding: 20px;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .form-title {
+        font-size: 1.5rem;
+    }
+    
+    .form-section {
+        padding: 20px;
+    }
+    
+    .cover-upload-area {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .cover-preview {
+        width: 200px;
+    }
+    
+    .cover-actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .form-grid.two-cols,
+    .form-grid.three-cols {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .cancel-btn,
+    .submit-btn {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .book-form-page {
+        padding: 16px;
+    }
+    
+    .header-icon {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .form-section {
+        padding: 16px;
+    }
+    
+    .section-heading {
+        font-size: 1.05rem;
+    }
+    
+    .cover-preview {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-section {
+    animation: fadeIn 0.5s ease backwards;
+}
+
+.form-section:nth-child(1) { animation-delay: 0.1s; }
+.form-section:nth-child(2) { animation-delay: 0.2s; }
+.form-section:nth-child(3) { animation-delay: 0.3s; }
+.form-section:nth-child(4) { animation-delay: 0.4s; }
+
+.form-actions {
+    animation: fadeIn 0.5s ease 0.5s backwards;
+}
+
+/* ========================================
+   FOCUS STATES
+   ======================================== */
+
+.upload-btn:focus,
+.remove-cover-btn:focus,
+.cancel-btn:focus,
+.submit-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(139, 69, 19, 0.2);
+}
+
+/* ========================================
+   VALIDATION STATES
+   ======================================== */
+
+.form-input:invalid:not(:placeholder-shown),
+.form-textarea:invalid:not(:placeholder-shown),
+.form-select:invalid {
+    border-color: var(--book-danger);
+}
+
+.form-input:valid:not(:placeholder-shown),
+.form-textarea:valid:not(:placeholder-shown) {
+    border-color: var(--book-success);
+}
