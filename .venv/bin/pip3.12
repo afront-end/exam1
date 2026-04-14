@@ -1,5 +1,5 @@
 #!/bin/sh
-'''exec' "/home/anush/Рабочий стол/exam1/.venv/bin/python3" "$0" "$@"
+'''exec' "/home/anush/Рабочий стол/Django/week1/exam1/.venv/bin/python3" "$0" "$@"
 ' '''
 # -*- coding: utf-8 -*-
 import re
