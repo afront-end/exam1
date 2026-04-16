@@ -64,44 +64,104 @@
         </div>
     </section>
 
-    <!-- Filter Bar -->
-    <section class="filter-bar">
-        <div class="filter-group">
-            <label class="filter-label">Сортировка:</label>
-            <select class="filter-select" id="sortSelect">
-                <option value="title">По названию</option>
-                <option value="price-low">Цена: по возрастанию</option>
-                <option value="price-high">Цена: по убыванию</option>
-                <option value="pages">По количеству страниц</option>
-            </select>
-        </div>
-        <div class="view-toggle">
-            <button class="view-btn active" data-view="grid" title="Сетка">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="3" width="7" height="7"></rect>
-                    <rect x="14" y="3" width="7" height="7"></rect>
-                    <rect x="3" y="14" width="7" height="7"></rect>
-                    <rect x="14" y="14" width="7" height="7"></rect>
-                </svg>
-            </button>
-            <button class="view-btn" data-view="list" title="Список">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="8" y1="6" x2="21" y2="6"></line>
-                    <line x1="8" y1="12" x2="21" y2="12"></line>
-                    <line x1="8" y1="18" x2="21" y2="18"></line>
-                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
-                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
-                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
-                </svg>
-            </button>
-        </div>
-        <a href="{% url 'book_create' %}" class="add-book-btn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="12" y1="5" x2="12" y2="19"></line>
-                <line x1="5" y1="12" x2="19" y2="12"></line>
+    <!-- FILTER SECTION - Объединенный стиль с проектом -->
+    <section class="filter-bar" style="flex-wrap: wrap; gap: 20px; margin: 0; border-bottom: 1px solid var(--book-border);">
+    <!-- Поиск -->
+    <form method="get" action="{% url 'books' %}" style="display: flex; gap: 15px; align-items: center;">
+    <div class="filter-group" style="flex: 2; min-width: 400px;">
+        <input type="text" 
+                name="search" 
+                placeholder="Поиск по названию..." 
+                value="{{ search }}" 
+                class="filter-select" 
+                style="width: 100%; background: var(--book-bg);">
+    </div>
+
+    <!-- Категории -->
+    <div class="filter-group">
+        <select name="category" class="filter-select">
+            <option value="">Все категории</option>
+            {% for cat in categories %}
+                <option value="{{ cat.id }}" {% if cat2 == cat.id|stringformat:"s" %}selected{% endif %}>
+                    {{ cat.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- Min Price -->
+    <div class="filter-group">
+        <input type="number" 
+                name="min_price" 
+                placeholder="Мин. цена" 
+                step="0.01"
+                value="{{ min_price }}" 
+                class="filter-select" 
+                style="width: 140px;padding: 10px;">
+    </div>
+
+    <!-- Max Price -->
+    <div class="filter-group">
+        <input type="number" 
+                name="max_price" 
+                placeholder="Макс. цена" 
+                step="0.01"
+                value="{{ max_price }}" 
+                class="filter-select" 
+                style="width: 130px;padding: 10px;">
+    </div>
+
+    <!-- Кнопки Apply & Reset -->
+    <div class="filter-group" style="gap: 10px;">
+        <button type="submit" class="add-book-btn" style="padding: 10px 24px; background: var(--book-gradient); box-shadow: 0 2px 8px var(--book-shadow);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;">
+                <path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path>
+                <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
             </svg>
-            Добавить книгу
+            Применить
+        </button>
+        <a href="{% url 'books' %}" class="view-btn" style="padding: 10px 24px; width: auto; background: var(--book-bg); color: var(--book-text); border: 2px solid var(--book-border); border-radius: var(--radius-md);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;">
+                <path d="M3 12h18M12 3v18" stroke="currentColor"/>
+                <path d="M18 9l3-3-3-3M6 15l-3 3 3 3" stroke="currentColor"/>
+            </svg>
+            Сбросить
         </a>
+    </div>
+    </form>
+
+    <!-- Кнопка добавления книги (справа) -->
+    <a href="{% url 'book_create' %}" class="add-book-btn" style="margin-left: auto; white-space: nowrap;">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+    </svg>
+    <span>Добавить книгу</span>
+    </a>
+    </section>
+
+    <!-- VIEW TOGGLE - Стиль в соответствии с проектом -->
+    <section class="filter-bar" style="justify-content: space-between; border-bottom: none; padding-top: 5;">
+    <div class="view-toggle">
+    <button class="view-btn active" data-view="grid" title="Сетка">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+        </svg>
+    </button>
+    <button class="view-btn" data-view="list" title="Список">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="8" y1="6" x2="21" y2="6"></line>
+            <line x1="8" y1="12" x2="21" y2="12"></line>
+            <line x1="8" y1="18" x2="21" y2="18"></line>
+            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+        </svg>
+    </button>
+    </div>
     </section>
 
     <!-- Books Grid -->

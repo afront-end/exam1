@@ -113,8 +113,32 @@ def publishers_delete(request, pk):
 
 # Book CRUD
 def books(request):
-    ans = {'books': Book.objects.all()}
-    return render(request,'books/books.html',ans)
+    all_books = Book.objects.all()
+    categories = Category.objects.all()
+
+    search = request.GET.get('search', '')
+    cat = request.GET.get('category', '')
+    min_price = request.GET.get('min_price', '')
+    max_price = request.GET.get('max_price', '')
+
+    if search:
+        all_books = all_books.filter(title__icontains=search)
+    if cat:
+        all_books = all_books.filter(category=cat)
+    if min_price:
+        all_books = all_books.filter(price__gte=min_price)
+    if max_price:
+        all_books = all_books.filter(price__lte=max_price)
+
+    ans = {
+        'books': all_books,
+        'categories': categories,
+        'search': search,
+        'cat2': cat,
+        'min_price': min_price,
+        'max_price': max_price,
+    }
+    return render(request, 'books/books.html', ans)
 
 def books_detail(request, pk):
     item = get_object_or_404(Book,id=pk)
