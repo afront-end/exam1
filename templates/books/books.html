@@ -12,42 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="header">
-        <nav class="nav">
-            <a href="{% url '/' %}" class="logo">
-                <span class="logo-icon">📚</span>
-                <span class="logo-text">BookHouse</span>
-            </a>
-            <ul class="nav-links">
-                <li><a href="{% url '/' %}" class="nav-link">Home</a></li>
-                <li><a href="{% url 'categories' %}" class="nav-link">Categories</a></li>
-                <li><a href="{% url 'authors' %}" class="nav-link">Authors</a></li>
-                <li><a href="{% url 'publishers' %}" class="nav-link">Publishers</a></li>
-                <li><a href="{% url 'books' %}" class="nav-link active">Books</a></li>
-            </ul>
-            <div class="nav-actions">
-                <button class="search-btn" aria-label="Search">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.35-4.35"></path>
-                    </svg>
-                </button>
-                <button class="cart-btn" aria-label="Cart">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"></path>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <path d="M16 10a4 4 0 01-8 0"></path>
-                    </svg>
-                    <span class="cart-count">0</span>
-                </button>
-            </div>
-            <button class="mobile-menu-btn" aria-label="Menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </nav>
-    </header>
+    {% include "header.html" %}
 
     <div class="books-page">
     <!-- Hero Section -->

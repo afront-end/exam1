@@ -1,5 +1,13 @@
 from django.db import models
 
+class UserModel(models.Model):
+    fullname = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    password = models.CharField()
+
+    def __str__(self):
+        return self.email
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
